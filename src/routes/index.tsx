@@ -1,12 +1,15 @@
-import type { CSSProperties } from "react";
-import { createFileRoute } from "@tanstack/react-router";
-import { Activity, HeartPulse, ShieldCheck, Sun, Timer, Wind } from "lucide-react";
+import { useEffect, useMemo, type CSSProperties } from "react";
+import { Link, createFileRoute } from "@tanstack/react-router";
+import { Activity, Check, HeartPulse, Sun, Timer, Wind } from "lucide-react";
+import { SiteHeader } from "@/components/SiteHeader";
 import { CameraStage } from "@/components/vitals/CameraStage";
 import { MetricCard } from "@/components/vitals/MetricCard";
 import { PulseWaveform } from "@/components/vitals/PulseWaveform";
 import { SignalMeter } from "@/components/vitals/SignalMeter";
 import { MEASURE_SECONDS, useVitalsSession } from "@/hooks/use-vitals-session";
 import { MIN_SECONDS } from "@/lib/vitals/estimate";
+import { historyActions } from "@/hooks/use-history";
+import { makeReading } from "@/lib/history/history";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -42,20 +45,19 @@ function Index() {
   const hr = est?.heartRate ?? null;
   const locked = live && hr !== null;
 
+  // Save each completed measurement to the private in-browser history.
+  const finished = s.phase === "done" ? s.estimate : null;
+  const reading = useMemo(
+    () => (finished && s.completedAt ? makeReading(finished, s.completedAt) : null),
+    [finished, s.completedAt],
+  );
+  useEffect(() => {
+    if (reading) historyActions.add(reading);
+  }, [reading]);
+
   return (
     <div className="mx-auto flex min-h-screen max-w-6xl flex-col px-5 pb-10 sm:px-8">
-      <header className="flex items-center justify-between py-6">
-        <div className="flex items-center gap-2.5">
-          <span className="flex size-8 items-center justify-center rounded-full bg-signal/15 text-signal">
-            <Activity className="size-4" />
-          </span>
-          <span className="font-display text-2xl tracking-tight">veyra</span>
-        </div>
-        <span className="hidden items-center gap-2 rounded-full border border-border px-3 py-1.5 text-xs text-muted-foreground sm:flex">
-          <ShieldCheck className="size-3.5 text-signal" />
-          Runs in your browser · no video uploaded
-        </span>
-      </header>
+      <SiteHeader />
 
       <section className="pb-8 pt-4 sm:pt-8">
         <h1 className="max-w-2xl font-display text-5xl leading-[1.02] tracking-tight sm:text-7xl">
@@ -127,6 +129,22 @@ function Index() {
               <PulseWaveform waveform={est?.waveform ?? []} beats={est?.beats ?? []} />
             </div>
           </div>
+
+          {s.phase === "done" && (
+            <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted-foreground" role="status">
+              {reading ? (
+                <>
+                  <Check className="size-4 text-signal" />
+                  Saved to your history on this device.
+                  <Link to="/history" className="text-signal underline-offset-4 hover:underline">
+                    See your trends
+                  </Link>
+                </>
+              ) : (
+                "No clear pulse this time, so this reading wasn't saved. Try brighter, even light and keep still."
+              )}
+            </p>
+          )}
         </div>
       </main>
 

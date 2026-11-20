@@ -60,6 +60,8 @@ export function useVitalsSession() {
   const [estimate, setEstimate] = useState<VitalsEstimate | null>(null);
   const [elapsed, setElapsed] = useState(0);
   const [conditions, setConditions] = useState<Conditions>({ light: "ok", moving: false });
+  /** Wall-clock time (epoch ms) the last measurement finished; identifies the reading for history. */
+  const [completedAt, setCompletedAt] = useState<number | null>(null);
 
   const stopCamera = useCallback(() => {
     runningRef.current = false;
@@ -121,6 +123,7 @@ export function useVitalsSession() {
     if (secs >= MEASURE_SECONDS) {
       stopCamera();
       setEstimate(est);
+      setCompletedAt(Date.now());
       setPhase("done");
       return;
     }
@@ -130,6 +133,7 @@ export function useVitalsSession() {
   const start = useCallback(async () => {
     setError(null);
     setEstimate(null);
+    setCompletedAt(null);
     setElapsed(0);
     setPhase("starting");
     samplesRef.current = [];
@@ -177,5 +181,5 @@ export function useVitalsSession() {
 
   useEffect(() => stopCamera, [stopCamera]);
 
-  return { videoRef, stageRef, phase, error, estimate, elapsed, conditions, start, cancel };
+  return { videoRef, stageRef, phase, error, estimate, elapsed, conditions, completedAt, start, cancel };
 }
