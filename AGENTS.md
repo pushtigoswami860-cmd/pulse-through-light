@@ -28,3 +28,8 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Project rules
+
+- Vital-sign math lives in pure, framework-free modules under `src/lib/vitals/` with unit tests; the camera hook only samples frames and calls them. Why: the estimation is testable with synthetic signals without a camera.
+- All camera processing stays in the browser; never upload frames or video. Why: the app promises no video leaves the device.
