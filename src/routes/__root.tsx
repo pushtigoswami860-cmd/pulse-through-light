@@ -80,10 +80,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Pulseglass — Contactless vitals from your camera" },
+      { title: "veyra — Contactless vitals from your camera" },
       { name: "description", content: "Heart rate, breathing rate and HRV measured from your camera, right in the browser." },
       { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Pulseglass — Contactless vitals from your camera" },
+      { property: "og:title", content: "veyra — Contactless vitals from your camera" },
       { property: "og:description", content: "Heart rate, breathing rate and HRV measured from your camera, right in the browser." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

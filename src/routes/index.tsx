@@ -11,12 +11,12 @@ import { MIN_SECONDS } from "@/lib/vitals/estimate";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Pulseglass — Heart rate, breathing & HRV from your camera" },
+      { title: "veyra — Heart rate, breathing & HRV from your camera" },
       {
         name: "description",
         content: "Measure heart rate, breathing rate and HRV in 45 seconds using your front camera. Runs in your browser — no video leaves your device.",
       },
-      { property: "og:title", content: "Pulseglass — Contactless vitals from your camera" },
+      { property: "og:title", content: "veyra — Contactless vitals from your camera" },
       {
         property: "og:description",
         content: "Heart rate, breathing rate and HRV read from the light on your skin, live in the browser.",
@@ -49,7 +49,7 @@ function Index() {
           <span className="flex size-8 items-center justify-center rounded-full bg-signal/15 text-signal">
             <Activity className="size-4" />
           </span>
-          <span className="font-display text-2xl tracking-tight">Pulseglass</span>
+          <span className="font-display text-2xl tracking-tight">veyra</span>
         </div>
         <span className="hidden items-center gap-2 rounded-full border border-border px-3 py-1.5 text-xs text-muted-foreground sm:flex">
           <ShieldCheck className="size-3.5 text-signal" />
@@ -63,7 +63,7 @@ function Index() {
         </h1>
         <p className="mt-4 max-w-xl text-muted-foreground">
           Every heartbeat tints your skin ever so slightly. Look into your camera for {MEASURE_SECONDS} seconds and
-          Pulseglass turns that colour change into heart rate, breathing and HRV.
+          veyra turns that colour change into heart rate, breathing and HRV.
         </p>
       </section>
 
@@ -131,7 +131,7 @@ function Index() {
       </main>
 
       <footer className="mt-10 border-t border-border pt-5 text-xs text-muted-foreground">
-        For wellness and curiosity only — Pulseglass is not a medical device and does not diagnose any condition.
+        For wellness and curiosity only — veyra is not a medical device and does not diagnose any condition.
       </footer>
     </div>
   );
